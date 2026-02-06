@@ -1,7 +1,7 @@
 {
     "name": "kales",
     "preductname": "Kalesbg",
-    "version": "2.2.9",
+    "version": "2.3.0",
     "description": "Launcher Mincraft pour le serveur de Kales",
     "main": "src/app.js",
     "author": {
