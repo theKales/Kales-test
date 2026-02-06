@@ -114,9 +114,10 @@ autoUpdater.on('update-not-available', () => {
     if (updateWindow) updateWindow.webContents.send('update-not-available');
 });
 
-autoUpdater.on('update-downloaded', () => {const { default: Store } = await import('electron-store');
+autoUpdater.on('update-downloaded', () => {
     autoUpdater.quitAndInstall();
 });
+
 
 autoUpdater.on('download-progress', (progress) => {
     const updateWindow = UpdateWindow.getWindow();
