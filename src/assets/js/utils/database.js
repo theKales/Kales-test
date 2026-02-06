@@ -22,16 +22,17 @@ export default class database {
     }
 
     async updateData(tableName, data, key = 1) {
-        let tableData = await ipcRenderer.invoke('store:get', tableName) || [];
+        let tableData = await ipcRenderer.invoke('store:get', tableName);
+        if (!Array.isArray(tableData)) tableData = [];
+
         const index = tableData.findIndex(item => item.ID === key);
         data.ID = key;
-        if (index !== -1) {
-            tableData[index] = data;
-        } else {
-            tableData.push(data);
-        }
+        if (index !== -1) tableData[index] = data;
+        else tableData.push(data);
+
         await ipcRenderer.invoke('store:set', tableName, tableData);
     }
+
 
     async deleteData(tableName, key = 1) {
         let tableData = await ipcRenderer.invoke('store:get', tableName) || [];
