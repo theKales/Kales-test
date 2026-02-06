@@ -19,7 +19,12 @@ class Splash {
         this.progress = document.querySelector(".progress");
         document.addEventListener('DOMContentLoaded', async () => {
             let databaseLauncher = new database();
+
+            let allData = await databaseLauncher.readAllData('configClient');
+            console.log("ALL CONFIG CLIENT:", allData);
+
             let configClient = await databaseLauncher.readData('configClient');
+            console.log("CONFIG CLIENT ID 1:", configClient);
             let theme = configClient?.launcher_config?.theme || "auto"
             let isDarkTheme = await ipcRenderer.invoke('is-dark-theme', theme).then(res => res)
             document.body.className = isDarkTheme ? 'dark global' : 'light global';
