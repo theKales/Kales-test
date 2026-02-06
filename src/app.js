@@ -33,8 +33,8 @@ else app.whenReady().then(async () => {
 
     store = new Store({
         name: 'launcher-data',
-        cwd: `${userDataPath}${dev ? '/..' : '/databases'}`,
-        encryptionKey: undefined, // <- désactive le chiffrement
+        cwd: `${userDataPath}/databases`,
+        encryptionKey: undefined,
     });
 
     ipcMain.handle('store:get', (_, key) => store.get(key));
