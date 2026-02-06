@@ -20,10 +20,42 @@ class Splash {
         document.addEventListener('DOMContentLoaded', async () => {
             let databaseLauncher = new database();
 
-            let allData = await databaseLauncher.readAllData('configClient');
-            console.log("ALL CONFIG CLIENT:", allData);
+            // 1️⃣ lire toute la table
+            let allConfig = await databaseLauncher.readAllData('configClient');
 
-            let configClient = await databaseLauncher.readData('configClient');
+            // 2️⃣ si vide → créer config par défaut
+            if (allConfig.length === 0) {
+                console.log("Création configClient par défaut");
+
+                await databaseLauncher.createData('configClient', {
+                    account_selected: null,
+                    instance_select: "Extra",
+                    java_config: {
+                        java_path: null,
+                        java_memory: {
+                            min: 2,
+                            max: 4
+                        }
+                    },
+                    game_config: {
+                        screen_size: {
+                            width: 854,
+                            height: 480
+                        }
+                    },
+                    launcher_config: {
+                        download_multi: 5,
+                        theme: "auto",
+                        closeLauncher: "close-launcher",
+                        intelEnabledMac: true
+                    }
+                });
+            }
+
+            // 3️⃣ maintenant seulement on lit
+            let configClient = await databaseLauncher.readData('configClient', 1);
+            console.log("CONFIG CLIENT FINAL:", configClient);
+
             console.log("CONFIG CLIENT ID 1:", configClient);
             let theme = configClient?.launcher_config?.theme || "auto"
             let isDarkTheme = await ipcRenderer.invoke('is-dark-theme', theme).then(res => res)
