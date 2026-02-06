@@ -34,7 +34,7 @@ else app.whenReady().then(async () => {
     store = new Store({
         name: 'launcher-data',
         cwd: `${userDataPath}${dev ? '/..' : '/databases'}`,
-        encryptionKey: dev ? undefined : 'selvania-launcher-key',
+        encryptionKey: undefined, // <- désactive le chiffrement
     });
 
     ipcMain.handle('store:get', (_, key) => store.get(key));
@@ -114,7 +114,7 @@ autoUpdater.on('update-not-available', () => {
     if (updateWindow) updateWindow.webContents.send('update-not-available');
 });
 
-autoUpdater.on('update-downloaded', () => {
+autoUpdater.on('update-downloaded', () => {const { default: Store } = await import('electron-store');
     autoUpdater.quitAndInstall();
 });
 
